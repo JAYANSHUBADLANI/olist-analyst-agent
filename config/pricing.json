@@ -1,0 +1,14 @@
+{
+  "currency": "USD",
+  "unit": "per_million_tokens",
+  "source": "Groq public pricing page, groq.com/pricing",
+  "retrieved": "UNVERIFIED",
+  "note": "Token counts logged by this project are measured exactly from the API response usage object. These rates are a configurable multiplier applied to those counts. Update the rates and set 'retrieved' to the date you checked them before quoting dollar figures anywhere.",
+  "models": {
+    "openai/gpt-oss-120b": {"input": 0.15, "output": 0.75},
+    "openai/gpt-oss-20b": {"input": 0.10, "output": 0.50},
+    "llama-3.3-70b-versatile": {"input": 0.59, "output": 0.79},
+    "llama-3.1-8b-instant": {"input": 0.05, "output": 0.08},
+    "google/gemini-2.5-flash-lite": {"input": 0.10, "output": 0.40}
+  }
+}
