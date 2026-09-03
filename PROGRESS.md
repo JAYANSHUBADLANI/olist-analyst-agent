@@ -6,8 +6,8 @@ Last updated: 2026-08-14
 
 **Phase 1, data and tools**
 
-- All nine Olist CSVs downloaded and verified. Kaggle needs authentication and this environment has
-  no Kaggle CLI or credentials, so the files came from a Hugging Face mirror instead. Integrity was
+- All nine Olist CSVs downloaded and verified. The Kaggle download needs an authenticated CLI,
+  so the files come from a Hugging Face mirror instead. Integrity was
   checked rather than assumed: the four LFS-tracked files match byte-for-byte against two other
   independent mirrors by SHA-256, and the five smaller files match by git blob hash. All nine sizes
   agree across three mirrors.

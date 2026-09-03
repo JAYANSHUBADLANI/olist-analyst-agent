@@ -1,5 +1,7 @@
 # A grounded data-analyst agent over a real relational database
 
+[![tests](https://github.com/JAYANSHUBADLANI/olist-analyst-agent/actions/workflows/tests.yml/badge.svg)](https://github.com/JAYANSHUBADLANI/olist-analyst-agent/actions/workflows/tests.yml)
+
 I built an agent that answers business questions about an e-commerce database it has never seen, by
 actually querying it. It explores the schema itself, writes and runs real SQL, reads what comes
 back, fixes its own broken queries, and then checks every number in its final answer against the
