@@ -308,4 +308,6 @@ The full profile is in [reports/data_profile.md](reports/data_profile.md).
 
 ## License
 
-MIT, see [LICENSE](LICENSE).
+MIT, see [LICENSE](LICENSE). That covers the code in this repository only.
+
+The data is the [Brazilian E-Commerce Public Dataset by Olist](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce), published by Olist on Kaggle under CC BY-NC-SA 4.0 (attribution, non-commercial, share-alike). It is not included in this repository: the fetcher downloads it into `data/raw/`, which git ignores. If you reuse the data, credit Olist and keep to those terms.
