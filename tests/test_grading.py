@@ -57,6 +57,20 @@ def test_name_only_answer_passes_when_the_question_only_asks_for_a_name():
     assert grade.correct
 
 
+def test_state_code_hidden_inside_another_word_is_not_a_match():
+    grade = grade_answer(by_id("q24"), "Most of our sales come from the south coast, especially in the cities.")
+    assert not grade.correct
+    assert grade.missing_strings
+
+
+def test_state_code_standing_alone_is_a_match():
+    assert grade_answer(by_id("q24"), "The top state is SP, with 41,746 orders.").correct
+
+
+def test_multi_word_alias_still_matches_with_punctuation():
+    assert grade_answer(by_id("q20"), "Health & beauty, by a clear margin.").correct
+
+
 def test_average_review_score_rejects_a_coarse_rounding():
     assert grade_answer(by_id("q03"), "The average review score is 4.09.").correct
     assert not grade_answer(by_id("q03"), "The average review score is 3.5.").correct

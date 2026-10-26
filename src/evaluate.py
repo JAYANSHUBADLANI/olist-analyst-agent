@@ -10,6 +10,7 @@ match within 2 percent relative tolerance, so an answer that sensibly rounds
 from __future__ import annotations
 
 import json
+import re
 import time
 import unicodedata
 from dataclasses import dataclass, field
@@ -60,12 +61,19 @@ def _number_found(expected: float, candidates: list[float]) -> bool:
     return False
 
 
+def _whole_word(option: str) -> re.Pattern[str]:
+    # A plain substring test credits a wrong answer whenever a short alias hides inside an ordinary
+    # word, for example "sp" inside "especially". Requiring non-word characters on both sides keeps
+    # multi-word aliases such as "health & beauty" and "sao paulo" working.
+    return re.compile(r"(?<![a-z0-9_])" + re.escape(option) + r"(?![a-z0-9_])")
+
+
 def _string_found(expected: str, answer: str, aliases: dict[str, list[str]]) -> bool:
     haystack = _normalise(answer)
     options = aliases.get(expected, [expected])
     if expected not in options:
         options = list(options) + [expected]
-    return any(_normalise(option) in haystack for option in options)
+    return any(_whole_word(_normalise(option)).search(haystack) for option in options)
 
 
 def grade_answer(question: Question, answer: str) -> Grade:

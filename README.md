@@ -168,7 +168,7 @@ earlier in development and got different figures again, which is expected and no
 comparison: that is a genuinely different, larger model, not a data point for this system's own
 run-to-run noise.
 
-What is verified without an API key, deterministically, by the 103 tests in `tests/`:
+What is verified without an API key, deterministically, by the 113 tests in `tests/`:
 
 - The database matches its source CSVs row for row, and SQLite and pandas agree on a join.
 - All four read-only layers reject everything thrown at them.
@@ -258,7 +258,7 @@ python run.py 3                                  full benchmark, baseline and ag
 python run.py 4                                  rebuild the report from the last run
 python run.py ask "which categories ship late?"  watch the agent answer one question
 python run.py ask --baseline "same question"     watch the single-shot baseline instead
-python -m pytest                                 103 tests, no API key needed
+python -m pytest                                 113 tests, no API key needed
 ```
 
 `ask` prints the plan, every tool call with its SQL, the real rows returned, any error and the retry
@@ -285,18 +285,18 @@ src/
   evaluate.py            benchmark runner and programmatic grading
   report.py              results to markdown
   cli.py                 live trace rendering
-tests/                   103 tests, including a scripted fake LLM for the loop
+tests/                   113 tests, including a scripted fake LLM for the loop
 docs/business_case.md    who this is for and why the overhead is worth it
 reports/                 data profile and benchmark output
 ```
 
 ## Notes on the data
 
-I verified the schema empirically rather than trusting the dataset description, and two things are
+I verified the schema empirically rather than trusting the dataset description, and three things are
 worth knowing:
 
-- `review_id` is **not** unique. 814 rows share an id with another row, so the primary key on
-  `order_reviews` is the composite `(review_id, order_id)`.
+- `review_id` is **not** unique. 814 rows repeat a `review_id` that another row already uses (1,603 rows
+  share an id in total), so the primary key on `order_reviews` is the composite `(review_id, order_id)`.
 - `products.product_category_name` has 610 nulls and 13 rows in two categories that are missing from
   the translation table entirely. I left that relationship undeclared rather than dropping real rows
   to satisfy a constraint.

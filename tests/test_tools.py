@@ -24,6 +24,10 @@ REJECTED = [
     "",
     "   ",
     "-- SELECT 1",
+    "REPLACE INTO sellers VALUES (1)",
+    "INSERT OR REPLACE INTO sellers VALUES (1)",
+    "WITH x AS (SELECT 1) REPLACE INTO sellers SELECT 1",
+    "WITH x AS (SELECT replace('a', 'a', 'b')) REPLACE INTO sellers SELECT 1",
 ]
 
 ACCEPTED = [
@@ -33,6 +37,8 @@ ACCEPTED = [
     "SELECT COUNT(*) FROM orders WHERE order_status = 'delivered'",
     "SELECT 1 -- a trailing comment",
     "SELECT COUNT(*) FROM orders WHERE order_status = 'drop table'",
+    "SELECT replace(product_category_name, '_', ' ') FROM products",
+    "SELECT REPLACE ( product_category_name , '_' , ' ' ) FROM products",
 ]
 
 
@@ -55,6 +61,12 @@ def test_database_is_opened_read_only(tools):
     result = tools.run_sql("SELECT COUNT(*) AS n FROM orders")
     assert result.ok
     assert result.payload["rows"][0][0] == 99441
+
+
+def test_replace_function_runs_against_the_database(tools):
+    result = tools.run_sql("SELECT replace('bed_bath_table', '_', ' ') AS category")
+    assert result.ok
+    assert result.payload["rows"][0][0] == "bed bath table"
 
 
 def test_row_limit_is_enforced(tools):

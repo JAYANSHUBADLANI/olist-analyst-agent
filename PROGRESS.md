@@ -43,7 +43,7 @@ Last updated: 2026-08-14
 
 **Testing**
 
-- 103 tests passing. The agent loop, the retry path and the guard repair path are all covered
+- 113 tests passing. The agent loop, the retry path and the guard repair path are all covered
   end to end with a scripted fake LLM, so they are verified without an API key and deterministically.
 
 **Portability**

@@ -32,6 +32,7 @@ FORBIDDEN_FUNCTIONS = {"load_extension", "readfile", "writefile", "edit", "fts3_
 COMMENT_PATTERN = re.compile(r"(--[^\n]*)|(/\*.*?\*/)", re.DOTALL)
 STRING_PATTERN = re.compile(r"'(?:[^']|'')*'")
 WORD_PATTERN = re.compile(r"[a-zA-Z_][a-zA-Z_0-9]*")
+REPLACE_CALL = re.compile(r"\breplace\s*\(", re.IGNORECASE)
 
 
 class SqlRejected(Exception):
@@ -76,7 +77,12 @@ def validate_sql(sql: str) -> str:
     if words[0] not in {"select", "with"}:
         raise SqlRejected(f"only SELECT and WITH statements are allowed, statement began with '{words[0]}'")
 
-    hits = sorted(set(words) & FORBIDDEN)
+    hits = set(words) & FORBIDDEN
+    if "replace" in hits and len(REPLACE_CALL.findall(body)) == words.count("replace"):
+        # replace(x, 'a', 'b') is an ordinary string function. The write form, REPLACE INTO, is
+        # never followed by an opening bracket, so it still fails when any occurrence is not a call.
+        hits.discard("replace")
+    hits = sorted(hits)
     if hits:
         raise SqlRejected(f"statement contains forbidden keyword(s): {', '.join(hits)}")
 
